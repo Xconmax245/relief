@@ -34,12 +34,12 @@ export const applicationSchema = z.object({
   }),
   w4FilingStatus: z.enum(['single_or_married_separately', 'married_jointly_or_widow', 'head_of_household'], { error: 'Filing status is required.' }),
   w4MultipleJobs: z.boolean().optional(),
-  w4ChildrenAmount: z.number().nonnegative().optional(),
-  w4OtherDependentsAmount: z.number().nonnegative().optional(),
-  w4TotalDependentsAmount: z.number().nonnegative().optional(),
-  w4OtherIncome: z.number().nonnegative().optional(),
-  w4Deductions: z.number().nonnegative().optional(),
-  w4ExtraWithholding: z.number().nonnegative().optional(),
+  w4ChildrenAmount: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
+  w4OtherDependentsAmount: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
+  w4TotalDependentsAmount: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
+  w4OtherIncome: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
+  w4Deductions: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
+  w4ExtraWithholding: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   facialImageBase64: z.string().min(1, 'Facial verification is required.'),
 });
 

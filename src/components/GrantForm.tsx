@@ -551,26 +551,26 @@ export default function GrantForm() {
         <p className="form-section-label">W-4 Tax Withholding Adjustments</p>
 
         <Field id={`${uid}-w4-filing`} label="(c) Filing Status" error={errors.w4FilingStatus}>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal" }}>
-              <input type="radio" name="w4FilingStatus" value="single_or_married_separately" checked={data.w4FilingStatus === 'single_or_married_separately'} onChange={set("w4FilingStatus")} />
-              Single or Married filing separately
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.5rem" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal", textTransform: "none", letterSpacing: "normal" }}>
+              <input type="radio" name="w4FilingStatus" value="single_or_married_separately" checked={data.w4FilingStatus === 'single_or_married_separately'} onChange={set("w4FilingStatus")} style={{ width: "auto", minHeight: "auto", margin: 0 }} />
+              <span style={{ fontSize: "0.9rem" }}>Single or Married filing separately</span>
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal" }}>
-              <input type="radio" name="w4FilingStatus" value="married_jointly_or_widow" checked={data.w4FilingStatus === 'married_jointly_or_widow'} onChange={set("w4FilingStatus")} />
-              Married filing jointly or Qualifying widow(er)
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal", textTransform: "none", letterSpacing: "normal" }}>
+              <input type="radio" name="w4FilingStatus" value="married_jointly_or_widow" checked={data.w4FilingStatus === 'married_jointly_or_widow'} onChange={set("w4FilingStatus")} style={{ width: "auto", minHeight: "auto", margin: 0 }} />
+              <span style={{ fontSize: "0.9rem" }}>Married filing jointly or Qualifying widow(er)</span>
             </label>
-            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal" }}>
-              <input type="radio" name="w4FilingStatus" value="head_of_household" checked={data.w4FilingStatus === 'head_of_household'} onChange={set("w4FilingStatus")} />
-              Head of household (Check only if you’re unmarried and pay more than half the cost of keeping up a home for yourself and a qualifying individual.)
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal", textTransform: "none", letterSpacing: "normal" }}>
+              <input type="radio" name="w4FilingStatus" value="head_of_household" checked={data.w4FilingStatus === 'head_of_household'} onChange={set("w4FilingStatus")} style={{ width: "auto", minHeight: "auto", margin: 0 }} />
+              <span style={{ fontSize: "0.9rem" }}>Head of household (Check only if you’re unmarried and pay more than half the cost of keeping up a home for yourself and a qualifying individual.)</span>
             </label>
           </div>
         </Field>
 
         <div style={{ marginTop: '1.5rem' }}>
           <p style={{ fontWeight: "bold", fontSize: "0.9rem", color: "var(--blue-primary-dark)", marginBottom: "0.5rem" }}>Step 2: Multiple Jobs or Spouse Works</p>
-          <label style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", fontSize: "0.85rem", lineHeight: "1.4" }}>
-            <input type="checkbox" checked={data.w4MultipleJobs} onChange={set("w4MultipleJobs")} style={{ marginTop: "0.2rem" }} />
+          <label style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", fontSize: "0.85rem", lineHeight: "1.4", fontWeight: "normal", textTransform: "none", letterSpacing: "normal" }}>
+            <input type="checkbox" checked={data.w4MultipleJobs} onChange={set("w4MultipleJobs")} style={{ width: "auto", minHeight: "auto", marginTop: "0.2rem" }} />
             <span>Check this box if there are only two jobs total (with similar pay)</span>
           </label>
         </div>
