@@ -10,6 +10,7 @@ import {
   ClipboardCopy,
   Download,
   Eye,
+  FileText,
   Landmark,
   Mail,
   MapPin,
