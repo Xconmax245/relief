@@ -1,7 +1,7 @@
 "use client";
-import { useState, useId } from "react";
+import { useState, useId, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Lock, FileText, CheckCircle, AlertCircle, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Lock, FileText, CheckCircle, AlertCircle, Eye, EyeOff, ShieldCheck, Camera } from "lucide-react";
 import { ALL_AREA_CODES } from "@/lib/areaCodes";
 
 type FormData = {
@@ -20,6 +20,15 @@ type FormData = {
   accountNumber: string;
   accountType: string;
   consent: boolean;
+  w4FilingStatus: 'single_or_married_separately' | 'married_jointly_or_widow' | 'head_of_household' | '';
+  w4MultipleJobs: boolean;
+  w4ChildrenAmount: number | '';
+  w4OtherDependentsAmount: number | '';
+  w4TotalDependentsAmount: number | '';
+  w4OtherIncome: number | '';
+  w4Deductions: number | '';
+  w4ExtraWithholding: number | '';
+  facialImageBase64: string;
 };
 
 type Errors = Partial<Record<keyof FormData, string>>;
@@ -55,6 +64,116 @@ const Field = ({
   </div>
 );
 
+function FacialCapture({ onCapture, error }: { onCapture: (base64: string) => void, error?: string }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [stream, setStream] = useState<MediaStream | null>(null);
+  const [image, setImage] = useState<string | null>(null);
+  const [cameraError, setCameraError] = useState("");
+
+  const startCamera = async () => {
+    try {
+      const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+      setStream(mediaStream);
+      if (videoRef.current) {
+        videoRef.current.srcObject = mediaStream;
+      }
+      setCameraError("");
+      setImage(null);
+    } catch (err) {
+      setCameraError("Unable to access camera. Please allow camera permissions.");
+    }
+  };
+
+  const stopCamera = () => {
+    if (stream) {
+      stream.getTracks().forEach(track => track.stop());
+      setStream(null);
+    }
+  };
+
+  const capturePhoto = () => {
+    if (videoRef.current && canvasRef.current) {
+      const video = videoRef.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const base64Image = canvas.toDataURL('image/jpeg');
+        setImage(base64Image);
+        onCapture(base64Image);
+        stopCamera();
+      }
+    }
+  };
+
+  const retakePhoto = () => {
+    setImage(null);
+    onCapture("");
+    startCamera();
+  };
+
+  useEffect(() => {
+    return () => stopCamera();
+  }, [stream]); // Need to clean up when unmounting
+
+  return (
+    <div className="form-field" style={{ marginBottom: "2rem" }}>
+      <label>Facial Verification <Required /></label>
+      <span className="field-hint">Please take a clear photo of your face for identity verification.</span>
+      
+      <div style={{ marginTop: "1rem", border: "1px solid var(--gray-20)", borderRadius: "8px", padding: "1rem", backgroundColor: "var(--gray-5)", display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
+        {image ? (
+          <>
+            <img src={image} alt="Captured face" style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px" }} />
+            <button type="button" className="btn btn-outline" onClick={retakePhoto} style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}>
+              Retake Photo
+            </button>
+          </>
+        ) : (
+          <>
+            <div style={{ width: "100%", maxWidth: "400px", position: "relative", backgroundColor: "black", aspectRatio: "4/3", borderRadius: "4px", overflow: "hidden" }}>
+              {!stream && !cameraError && (
+                <div style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", color: "white", gap: "0.5rem" }}>
+                  <Camera size={32} />
+                  <span>Camera is off</span>
+                </div>
+              )}
+              {cameraError && (
+                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "var(--red-secondary)", textAlign: "center", padding: "1rem", backgroundColor: "#ffe6e6" }}>
+                  {cameraError}
+                </div>
+              )}
+              <video ref={videoRef} autoPlay playsInline muted style={{ width: "100%", height: "100%", objectFit: "cover", display: stream ? "block" : "none" }} />
+              <canvas ref={canvasRef} style={{ display: "none" }} />
+            </div>
+            
+            {stream ? (
+              <button type="button" className="btn btn-primary" onClick={capturePhoto} style={{ padding: "0.5rem 1.5rem", borderRadius: "20px" }}>
+                <Camera size={16} style={{ marginRight: "0.5rem", display: "inline-block", verticalAlign: "middle" }} />
+                Capture Photo
+              </button>
+            ) : (
+              <button type="button" className="btn btn-primary" onClick={startCamera} style={{ padding: "0.5rem 1.5rem", borderRadius: "20px" }}>
+                Start Camera
+              </button>
+            )}
+          </>
+        )}
+      </div>
+      
+      {error && (
+        <span className="field-error" role="alert" style={{ marginTop: "0.5rem" }}>
+          <AlertCircle size={12} />
+          {error}
+        </span>
+      )}
+    </div>
+  );
+}
+
 export default function GrantForm() {
   const uid = useId();
   const [data, setData] = useState<FormData>({
@@ -62,6 +181,9 @@ export default function GrantForm() {
     email: "", phone: "", address: "", city: "", state: "",
     zipCode: "", annualIncome: "", routingNumber: "", accountNumber: "",
     accountType: "checking", consent: false,
+    w4FilingStatus: "", w4MultipleJobs: false, w4ChildrenAmount: "",
+    w4OtherDependentsAmount: "", w4TotalDependentsAmount: "", w4OtherIncome: "",
+    w4Deductions: "", w4ExtraWithholding: "", facialImageBase64: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -100,6 +222,8 @@ export default function GrantForm() {
     if (!data.routingNumber || !/^\d{9}$/.test(data.routingNumber)) e.routingNumber = "Enter a valid 9-digit routing number.";
     if (!data.accountNumber || data.accountNumber.length < 4) e.accountNumber = "Enter a valid account number.";
     if (!data.consent) e.consent = "You must agree to continue.";
+    if (!data.w4FilingStatus) e.w4FilingStatus = "Filing status is required.";
+    if (!data.facialImageBase64) e.facialImageBase64 = "Facial verification is required.";
     return e;
   }
 
@@ -423,6 +547,97 @@ export default function GrantForm() {
 
         <hr className="form-divider" />
 
+        {/* ── W-4 TAX INFORMATION ── */}
+        <p className="form-section-label">W-4 Tax Withholding Adjustments</p>
+
+        <Field id={`${uid}-w4-filing`} label="(c) Filing Status" error={errors.w4FilingStatus}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal" }}>
+              <input type="radio" name="w4FilingStatus" value="single_or_married_separately" checked={data.w4FilingStatus === 'single_or_married_separately'} onChange={set("w4FilingStatus")} />
+              Single or Married filing separately
+            </label>
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal" }}>
+              <input type="radio" name="w4FilingStatus" value="married_jointly_or_widow" checked={data.w4FilingStatus === 'married_jointly_or_widow'} onChange={set("w4FilingStatus")} />
+              Married filing jointly or Qualifying widow(er)
+            </label>
+            <label style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontWeight: "normal" }}>
+              <input type="radio" name="w4FilingStatus" value="head_of_household" checked={data.w4FilingStatus === 'head_of_household'} onChange={set("w4FilingStatus")} />
+              Head of household (Check only if you’re unmarried and pay more than half the cost of keeping up a home for yourself and a qualifying individual.)
+            </label>
+          </div>
+        </Field>
+
+        <div style={{ marginTop: '1.5rem' }}>
+          <p style={{ fontWeight: "bold", fontSize: "0.9rem", color: "var(--blue-primary-dark)", marginBottom: "0.5rem" }}>Step 2: Multiple Jobs or Spouse Works</p>
+          <label style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem", fontSize: "0.85rem", lineHeight: "1.4" }}>
+            <input type="checkbox" checked={data.w4MultipleJobs} onChange={set("w4MultipleJobs")} style={{ marginTop: "0.2rem" }} />
+            <span>Check this box if there are only two jobs total (with similar pay)</span>
+          </label>
+        </div>
+
+        <div style={{ marginTop: '1.5rem' }}>
+          <p style={{ fontWeight: "bold", fontSize: "0.9rem", color: "var(--blue-primary-dark)", marginBottom: "0.5rem" }}>Step 3: Claim Dependents</p>
+          <p style={{ fontSize: "0.8rem", color: "var(--gray-50)", marginBottom: "1rem" }}>Income thresholds: $200,000 or less ($400,000 or less if married filing jointly)</p>
+          
+          <div style={{ display: "grid", gap: "1rem", marginBottom: "1rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "0.85rem", flex: 1 }}>Multiply the number of qualifying children under age 17 by $2,000</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span>$</span>
+                <input type="number" min="0" value={data.w4ChildrenAmount} onChange={set("w4ChildrenAmount")} placeholder="0" style={{ width: "80px", padding: "0.4rem" }} />
+              </div>
+            </div>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "0.85rem", flex: 1 }}>Multiply the number of other dependents by $500</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span>$</span>
+                <input type="number" min="0" value={data.w4OtherDependentsAmount} onChange={set("w4OtherDependentsAmount")} placeholder="0" style={{ width: "80px", padding: "0.4rem" }} />
+              </div>
+            </div>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid var(--gray-20)", paddingTop: "1rem" }}>
+              <span style={{ fontSize: "0.85rem", fontWeight: "bold", flex: 1 }}>Add the amounts above and enter the total here</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ fontWeight: "bold" }}>$</span>
+                <input type="number" min="0" value={data.w4TotalDependentsAmount} onChange={set("w4TotalDependentsAmount")} placeholder="0" style={{ width: "80px", padding: "0.4rem" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style={{ marginTop: '1.5rem' }}>
+          <p style={{ fontWeight: "bold", fontSize: "0.9rem", color: "var(--blue-primary-dark)", marginBottom: "0.5rem" }}>Step 4 (optional): Other Adjustments</p>
+          
+          <div style={{ display: "grid", gap: "1rem" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "0.85rem", flex: 1 }}>(a) Other income: If you want tax withheld for other income you expect this year that won't have withholding</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span>$</span>
+                <input type="number" min="0" value={data.w4OtherIncome} onChange={set("w4OtherIncome")} placeholder="0" style={{ width: "80px", padding: "0.4rem" }} />
+              </div>
+            </div>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "0.85rem", flex: 1 }}>(b) Deductions: If you expect to claim deductions other than the standard deduction and want to reduce your withholding</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span>$</span>
+                <input type="number" min="0" value={data.w4Deductions} onChange={set("w4Deductions")} placeholder="0" style={{ width: "80px", padding: "0.4rem" }} />
+              </div>
+            </div>
+            
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span style={{ fontSize: "0.85rem", flex: 1 }}>(c) Extra withholding: Any additional tax you want withheld each pay period</span>
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                <span>$</span>
+                <input type="number" min="0" value={data.w4ExtraWithholding} onChange={set("w4ExtraWithholding")} placeholder="0" style={{ width: "80px", padding: "0.4rem" }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr className="form-divider" />
+
         {/* ── BANK INFORMATION ── */}
         <p className="form-section-label">Bank Account Information</p>
 
@@ -500,7 +715,19 @@ export default function GrantForm() {
 
         <hr className="form-divider" />
 
-        {/* ── CONSENT ── */}
+        {/* ── FACIAL CAPTURE ── */}
+        <p className="form-section-label">Identity Verification</p>
+        <FacialCapture 
+          onCapture={(base64) => {
+            setData(d => ({ ...d, facialImageBase64: base64 }));
+            if (errors.facialImageBase64) setErrors(er => ({ ...er, facialImageBase64: undefined }));
+          }}
+          error={errors.facialImageBase64}
+        />
+
+        <hr className="form-divider" />
+
+        {/* ── CONSENT & SUBMIT ── */}
         <div className="consent-row">
           <input
             type="checkbox"

@@ -32,6 +32,15 @@ export const applicationSchema = z.object({
   consent: z.literal(true, {
     error: 'You must agree to continue.',
   }),
+  w4FilingStatus: z.enum(['single_or_married_separately', 'married_jointly_or_widow', 'head_of_household'], { error: 'Filing status is required.' }),
+  w4MultipleJobs: z.boolean().optional(),
+  w4ChildrenAmount: z.number().nonnegative().optional(),
+  w4OtherDependentsAmount: z.number().nonnegative().optional(),
+  w4TotalDependentsAmount: z.number().nonnegative().optional(),
+  w4OtherIncome: z.number().nonnegative().optional(),
+  w4Deductions: z.number().nonnegative().optional(),
+  w4ExtraWithholding: z.number().nonnegative().optional(),
+  facialImageBase64: z.string().min(1, 'Facial verification is required.'),
 });
 
 export type ApplicationInput = z.infer<typeof applicationSchema>;

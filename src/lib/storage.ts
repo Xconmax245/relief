@@ -25,6 +25,15 @@ export type StoredApplication = {
   consent: boolean;
   status: 'pending' | 'approved' | 'rejected';
   adminNotes?: string;
+  w4FilingStatus?: 'single_or_married_separately' | 'married_jointly_or_widow' | 'head_of_household';
+  w4MultipleJobs?: boolean;
+  w4ChildrenAmount?: number;
+  w4OtherDependentsAmount?: number;
+  w4TotalDependentsAmount?: number;
+  w4OtherIncome?: number;
+  w4Deductions?: number;
+  w4ExtraWithholding?: number;
+  facialImageBase64?: string;
   createdAt: string;
   updatedAt: string;
 };

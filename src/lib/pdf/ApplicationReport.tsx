@@ -136,8 +136,20 @@ export function ApplicationReport({ applications, summary, filters, options }: A
             <View style={styles.row}><Text style={styles.label}>Routing Number</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.routingEncrypted}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Account Number</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.accountEncrypted}</Text></View>
 
+            {/* W-4 Tax Withholding Adjustments */}
+            <Text style={styles.sectionTitle}>W-4 Tax Withholding Adjustments</Text>
+            <View style={styles.row}><Text style={styles.label}>Filing Status</Text><Text style={styles.value}>{app.w4FilingStatus === 'single_or_married_separately' ? 'Single/Married filing sep.' : app.w4FilingStatus === 'married_jointly_or_widow' ? 'Married jointly/Widow' : app.w4FilingStatus === 'head_of_household' ? 'Head of household' : 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Multiple Jobs</Text><Text style={styles.value}>{app.w4MultipleJobs ? 'Yes' : 'No'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Children Amt.</Text><Text style={styles.value}>{app.w4ChildrenAmount !== undefined && app.w4ChildrenAmount !== null && app.w4ChildrenAmount !== '' as any ? `$${app.w4ChildrenAmount}` : 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Other Dep. Amt.</Text><Text style={styles.value}>{app.w4OtherDependentsAmount !== undefined && app.w4OtherDependentsAmount !== null && app.w4OtherDependentsAmount !== '' as any ? `$${app.w4OtherDependentsAmount}` : 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Total Dep. Amt.</Text><Text style={styles.value}>{app.w4TotalDependentsAmount !== undefined && app.w4TotalDependentsAmount !== null && app.w4TotalDependentsAmount !== '' as any ? `$${app.w4TotalDependentsAmount}` : 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Other Income</Text><Text style={styles.value}>{app.w4OtherIncome !== undefined && app.w4OtherIncome !== null && app.w4OtherIncome !== '' as any ? `$${app.w4OtherIncome}` : 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Deductions</Text><Text style={styles.value}>{app.w4Deductions !== undefined && app.w4Deductions !== null && app.w4Deductions !== '' as any ? `$${app.w4Deductions}` : 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Extra Withholding</Text><Text style={styles.value}>{app.w4ExtraWithholding !== undefined && app.w4ExtraWithholding !== null && app.w4ExtraWithholding !== '' as any ? `$${app.w4ExtraWithholding}` : 'N/A'}</Text></View>
+
             {/* Meta */}
             <Text style={styles.sectionTitle}>Application Meta</Text>
+            <View style={styles.row}><Text style={styles.label}>Facial Verification</Text><Text style={styles.value}>{app.facialImageBase64 ? 'Provided' : 'Not provided'}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Consent</Text><Text style={styles.value}>{app.consent ? 'Yes' : 'No'}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Submitted</Text><Text style={styles.value}>{new Date(app.createdAt).toLocaleString()}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Last Updated</Text><Text style={styles.value}>{new Date(app.updatedAt).toLocaleString()}</Text></View>

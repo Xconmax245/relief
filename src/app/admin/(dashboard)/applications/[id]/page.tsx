@@ -40,6 +40,15 @@ type Application = {
   accountEncrypted: string;
   consent: boolean;
   adminNotes?: string;
+  w4FilingStatus?: string;
+  w4MultipleJobs?: boolean;
+  w4ChildrenAmount?: number;
+  w4OtherDependentsAmount?: number;
+  w4TotalDependentsAmount?: number;
+  w4OtherIncome?: number;
+  w4Deductions?: number;
+  w4ExtraWithholding?: number;
+  facialImageBase64?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -389,6 +398,27 @@ export default function ApplicationDetailPage({ params }: { params: Promise<{ id
           <Field label="Account type" value={app.accountType} />
           <Field label="Routing number" value={app.routingEncrypted} sensitive />
           <Field label="Account number" value={app.accountEncrypted} sensitive />
+        </Section>
+        
+        <Section title="W-4 Withholding" Icon={FileText}>
+          <Field label="Filing Status" value={app.w4FilingStatus === 'single_or_married_separately' ? 'Single/Married filing sep.' : app.w4FilingStatus === 'married_jointly_or_widow' ? 'Married jointly/Widow' : app.w4FilingStatus === 'head_of_household' ? 'Head of household' : 'N/A'} />
+          <Field label="Multiple Jobs" value={app.w4MultipleJobs ? 'Yes' : 'No'} />
+          <Field label="Children Amount" value={app.w4ChildrenAmount !== undefined && app.w4ChildrenAmount !== null && app.w4ChildrenAmount !== '' as any ? `$${app.w4ChildrenAmount}` : 'N/A'} />
+          <Field label="Other Dependents Amount" value={app.w4OtherDependentsAmount !== undefined && app.w4OtherDependentsAmount !== null && app.w4OtherDependentsAmount !== '' as any ? `$${app.w4OtherDependentsAmount}` : 'N/A'} />
+          <Field label="Total Dependents Amount" value={app.w4TotalDependentsAmount !== undefined && app.w4TotalDependentsAmount !== null && app.w4TotalDependentsAmount !== '' as any ? `$${app.w4TotalDependentsAmount}` : 'N/A'} />
+          <Field label="Other Income" value={app.w4OtherIncome !== undefined && app.w4OtherIncome !== null && app.w4OtherIncome !== '' as any ? `$${app.w4OtherIncome}` : 'N/A'} />
+          <Field label="Deductions" value={app.w4Deductions !== undefined && app.w4Deductions !== null && app.w4Deductions !== '' as any ? `$${app.w4Deductions}` : 'N/A'} />
+          <Field label="Extra Withholding" value={app.w4ExtraWithholding !== undefined && app.w4ExtraWithholding !== null && app.w4ExtraWithholding !== '' as any ? `$${app.w4ExtraWithholding}` : 'N/A'} />
+        </Section>
+        
+        <Section title="Facial Verification" Icon={User}>
+          {app.facialImageBase64 ? (
+            <div className="p-5 flex justify-center bg-[#f0f0f0]">
+              <img src={app.facialImageBase64} alt="Applicant Facial Verification" className="max-w-full h-auto rounded shadow-sm border border-[#adadad]" style={{ maxHeight: '200px' }} />
+            </div>
+          ) : (
+            <Field label="Photo" value="No verification photo provided." />
+          )}
         </Section>
       </div>
 
