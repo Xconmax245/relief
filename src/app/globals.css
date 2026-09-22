@@ -479,6 +479,12 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--gold-accent);
   z-index: 2;
 }
+@media (max-width: 768px) {
+  .hero-stripe-red,
+  .hero-stripe-gold {
+    display: none;
+  }
+}
 /* Centered full-width hero layout */
 .hero-inner {
   position: relative;

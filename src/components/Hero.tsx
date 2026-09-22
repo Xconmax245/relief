@@ -17,19 +17,19 @@ export default function Hero() {
             OFFICIAL NOTICE: The Trump Administration American Citizen Grant Program is now accepting applications
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
-            Deadline: Limited enrollment period — Apply today
+            Deadline: Limited enrollment period. Apply today
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
             $5,000 direct payment to eligible U.S. adult citizens
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
-            256-bit SSL encrypted — Your data is safe
+            256-bit SSL encrypted. Your data is safe
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
             OFFICIAL NOTICE: The Trump Administration American Citizen Grant Program is now accepting applications
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
-            Deadline: Limited enrollment period — Apply today
+            Deadline: Limited enrollment period. Apply today
             &nbsp;&nbsp;&nbsp;&nbsp;
           </span>
         </div>

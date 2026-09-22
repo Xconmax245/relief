@@ -122,10 +122,10 @@ export default function HomePage() {
               every eligible U.S. citizen has the opportunity to claim a
               direct{" "}
               <strong style={{ color: "var(--red-secondary)" }}>$5,000 grant</strong>{" "}
-              — no strings attached, no repayment required.
+              with no strings attached, no repayment required.
             </p>
             <p className="president-quote-body">
-              This administration believes in you — the American worker,
+              This administration believes in you: the American worker,
               entrepreneur, veteran, and family. These funds are yours.
               Apply today and receive your grant within 7–14 business days.
             </p>
@@ -196,7 +196,7 @@ export default function HomePage() {
                 citizens as part of the America First Economic Relief Program. This program is
                 administered by the Executive Office of the President and funded by the federal
                 Economic Relief Act. Applications are processed on a first-come, first-served basis.
-                <strong style={{ color: "#f0c169" }}> Limited enrollment period — apply today.</strong>
+                <strong style={{ color: "#f0c169" }}> Limited enrollment period. Apply today.</strong>
               </p>
             </div>
           </div>
@@ -223,7 +223,7 @@ export default function HomePage() {
 
             <div className="secure-badge">
               <Lock size={14} />
-              Secured by 256-bit SSL Encryption — WhiteHouse.gov Official Program
+              Secured by 256-bit SSL Encryption. Official Program
             </div>
 
             {/* Mini stats */}
