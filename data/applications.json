@@ -1,0 +1,24 @@
+[
+  {
+    "id": "app_1790054815774_031j3n",
+    "referenceNumber": "WH-GRANT-28530-4997",
+    "firstName": "ytdh",
+    "lastName": "jff",
+    "dateOfBirth": "2008-09-17",
+    "ssnEncrypted": "{\"iv\":\"uYt57BaY0TkPxc9n\",\"authTag\":\"kz8/Fq6SWIRddhzISWVLig==\",\"encryptedData\":\"nW9Klz/LZ6SB\"}",
+    "email": "admin@example.com",
+    "phone": "8705757765",
+    "address": "jhffvhkb.kj;jg ugiygigb",
+    "city": "6rytyugyjk",
+    "state": "FL",
+    "zipCode": "57558-8555",
+    "annualIncome": "over-100k",
+    "accountType": "savings",
+    "routingEncrypted": "{\"iv\":\"UHmBsrWNV6yXkai/\",\"authTag\":\"D46pbmZVPo8onHfq4tOqng==\",\"encryptedData\":\"1+9Ufs+Xllb3\"}",
+    "accountEncrypted": "{\"iv\":\"2bGt/DGO0/H4Yylt\",\"authTag\":\"zYRMx8HErjI/w1Ex/G5viA==\",\"encryptedData\":\"IuhEA3T2gn5gpkU=\"}",
+    "consent": true,
+    "status": "pending",
+    "createdAt": "2026-09-22T05:26:55.774Z",
+    "updatedAt": "2026-09-22T05:26:55.774Z"
+  }
+]
