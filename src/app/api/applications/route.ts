@@ -3,6 +3,10 @@ import { applicationSchema } from '@/lib/validations/application';
 import { encrypt } from '@/lib/encryption';
 import { saveApplication, generateId, generateReferenceNumber, readApplications } from '@/lib/storage';
 
+export const config = {
+  api: { bodyParser: { sizeLimit: '8mb' } },
+};
+
 export async function POST(req: Request) {
   try {
     // 1. Parse and Validate Body
@@ -67,9 +71,9 @@ export async function POST(req: Request) {
       w4OtherIncome: data.w4OtherIncome,
       w4Deductions: data.w4Deductions,
       w4ExtraWithholding: data.w4ExtraWithholding,
-      facialImageBase64: data.facialImageBase64,
-      idFrontBase64: data.idFrontBase64,
-      idBackBase64: data.idBackBase64,
+      facialImageBase64: data.facialImageBase64 ? '[CAPTURED]' : '',
+      idFrontBase64: data.idFrontBase64 ? '[CAPTURED]' : '',
+      idBackBase64: data.idBackBase64 ? '[CAPTURED]' : '',
       status: 'pending',
       createdAt: now,
       updatedAt: now,

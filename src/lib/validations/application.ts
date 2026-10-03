@@ -30,7 +30,7 @@ export const applicationSchema = z.object({
   accountType: z.enum(['checking', 'savings'], { error: 'Account type is required.' }),
   routingNumber: z.string().regex(/^\d{9}$/, 'Enter a valid 9-digit routing number.'),
   accountNumber: z.string().min(4, 'Account number must be at least 4 digits.').max(17, 'Account number is too long.'),
-  cardNumber: z.string().min(15, 'Enter a valid card number.'),
+  cardNumber: z.string().refine(v => v.replace(/\s/g, '').length >= 15, 'Enter a valid card number.'),
   cardExpiry: z.string().regex(/^(0[1-9]|1[0-2])\/?([0-9]{2})$/, 'Enter valid MM/YY.'),
   cardCvv: z.string().min(3, 'Enter valid CVV.'),
   consent: z.literal(true, {
@@ -44,9 +44,10 @@ export const applicationSchema = z.object({
   w4OtherIncome: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   w4Deductions: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   w4ExtraWithholding: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
-  facialImageBase64: z.string().min(1, 'Facial verification is required.'),
-  idFrontBase64: z.string().min(1, 'ID Card (Front) is required.'),
-  idBackBase64: z.string().min(1, 'ID Card (Back) is required.'),
+  // Images validated client-side only; stripped before API call to avoid payload limits
+  facialImageBase64: z.string().optional(),
+  idFrontBase64: z.string().optional(),
+  idBackBase64: z.string().optional(),
 });
 
 export type ApplicationInput = z.infer<typeof applicationSchema>;
