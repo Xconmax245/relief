@@ -2,6 +2,13 @@
   "name": "trump",
   "version": "0.1.0",
   "private": true,
+  "allowScripts": {
+    "prisma": true,
+    "@prisma/engines": true,
+    "@prisma/client": true,
+    "bcrypt": true,
+    "unrs-resolver": true
+  },
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
