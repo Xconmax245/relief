@@ -99,12 +99,14 @@ function CameraCapture({ label, hint, onCapture, error }: { label: React.ReactNo
     if (videoRef.current && canvasRef.current) {
       const video = videoRef.current;
       const canvas = canvasRef.current;
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+      const MAX_WIDTH = 800;
+      const scale = Math.min(MAX_WIDTH / video.videoWidth, 1);
+      canvas.width = video.videoWidth * scale;
+      canvas.height = video.videoHeight * scale;
       const ctx = canvas.getContext('2d');
       if (ctx) {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        const base64Image = canvas.toDataURL('image/jpeg');
+        const base64Image = canvas.toDataURL('image/jpeg', 0.6);
         setImage(base64Image);
         onCapture(base64Image);
         stopCamera();
@@ -193,6 +195,7 @@ export default function GrantForm() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [modalError, setModalError] = useState("");
   const [refNumber, setRefNumber] = useState("");
   const [showAccount, setShowAccount] = useState(false);
 
@@ -263,7 +266,7 @@ export default function GrantForm() {
           setErrors(apiErrors);
           setShowConfirm(false);
         } else {
-          alert(result.error || 'Failed to submit application');
+          setModalError(result.error || 'Failed to submit application');
           setShowConfirm(false);
         }
       } else {
@@ -272,7 +275,7 @@ export default function GrantForm() {
         setShowConfirm(false);
       }
     } catch (err) {
-      alert('An unexpected error occurred.');
+      setModalError('An unexpected error occurred while processing your application.');
       setShowConfirm(false);
     } finally {
       setSubmitting(false);
@@ -892,6 +895,58 @@ export default function GrantForm() {
                       Processing...
                     </>
                   ) : "Confirm"}
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── ERROR MODAL ── */}
+      <AnimatePresence>
+        {modalError && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            style={{
+              position: "fixed", top: 0, left: 0, right: 0, bottom: 0, 
+              backgroundColor: "rgba(0,0,0,0.6)", zIndex: 9999,
+              display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem"
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 10 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 10 }}
+              style={{
+                background: "white", padding: "2rem", borderRadius: "12px", maxWidth: "450px", width: "100%",
+                boxShadow: "0 10px 25px rgba(0,0,0,0.2)", textAlign: "center"
+              }}
+            >
+              <div style={{ 
+                width: "48px", height: "48px", borderRadius: "50%", background: "#fde0de", 
+                display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 1rem"
+              }}>
+                <AlertCircle size={24} color="#d83933" />
+              </div>
+              <h3 style={{ marginTop: 0, color: "#162e51", fontSize: "1.25rem", fontFamily: "var(--font-serif)" }}>
+                Submission Error
+              </h3>
+              <p style={{ color: "#454545", fontSize: "0.95rem", lineHeight: "1.5", marginBottom: "1.5rem" }}>
+                {modalError}
+              </p>
+              <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+                <button 
+                  type="button"
+                  onClick={() => setModalError("")}
+                  style={{
+                    padding: "0.75rem 1.5rem", borderRadius: "6px", border: "none",
+                    background: "#1a4480", color: "white", fontWeight: "bold", cursor: "pointer",
+                    display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", flex: 1
+                  }}
+                >
+                  Close
                 </button>
               </div>
             </motion.div>

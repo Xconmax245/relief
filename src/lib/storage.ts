@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 
-// Store applications in a JSON file in the project root/data directory
-const DATA_DIR = path.join(process.cwd(), 'data');
+// Store applications in a JSON file
+const DATA_DIR = process.env.NODE_ENV === 'production' || process.env.VERCEL ? '/tmp/data' : path.join(process.cwd(), 'data');
 const APPLICATIONS_FILE = path.join(DATA_DIR, 'applications.json');
 
 export type StoredApplication = {
