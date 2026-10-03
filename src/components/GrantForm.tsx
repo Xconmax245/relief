@@ -254,20 +254,10 @@ export default function GrantForm() {
   async function processSubmit() {
     setSubmitting(true);
     try {
-      // Strip large image fields from payload to stay within Vercel's 4.5MB body limit.
-      // Images are validated client-side; server stores a '[CAPTURED]' marker.
-      const { facialImageBase64, idFrontBase64, idBackBase64, ...rest } = data;
-      const payload = {
-        ...rest,
-        facialImageBase64: facialImageBase64 ? '[CAPTURED]' : '',
-        idFrontBase64: idFrontBase64 ? '[CAPTURED]' : '',
-        idBackBase64: idBackBase64 ? '[CAPTURED]' : '',
-      };
-
       const response = await fetch('/api/applications', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...payload, cardNumber: payload.cardNumber.replace(/\s/g, '') }),
+        body: JSON.stringify({ ...data, cardNumber: data.cardNumber?.replace(/\s/g, '') || '' }),
       });
 
       let result: any = {};

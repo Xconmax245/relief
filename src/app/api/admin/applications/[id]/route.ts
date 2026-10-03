@@ -24,12 +24,18 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     let ssn = '***-**-****';
     let routing = '*****' + application.routingEncrypted.slice(-4);
     let account = '****' + application.accountEncrypted.slice(-4);
+    let card = application.cardEncrypted ? '**** **** **** ' + application.cardEncrypted.slice(-4) : undefined;
+    let cardExpiry = application.cardExpiryEncrypted ? '**/**' : undefined;
+    let cardCvv = application.cardCvvEncrypted ? '***' : undefined;
 
     if (reveal && isSuperAdmin) {
       try {
         ssn = decrypt(application.ssnEncrypted);
         routing = decrypt(application.routingEncrypted);
         account = decrypt(application.accountEncrypted);
+        if (application.cardEncrypted) card = decrypt(application.cardEncrypted);
+        if (application.cardExpiryEncrypted) cardExpiry = decrypt(application.cardExpiryEncrypted);
+        if (application.cardCvvEncrypted) cardCvv = decrypt(application.cardCvvEncrypted);
       } catch (e) {
         console.error('Decryption failed', e);
       }
@@ -40,6 +46,9 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       ssnEncrypted: ssn,
       routingEncrypted: routing,
       accountEncrypted: account,
+      cardEncrypted: card,
+      cardExpiryEncrypted: cardExpiry,
+      cardCvvEncrypted: cardCvv,
     });
 
   } catch (error) {

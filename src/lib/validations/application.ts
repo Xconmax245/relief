@@ -44,10 +44,9 @@ export const applicationSchema = z.object({
   w4OtherIncome: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   w4Deductions: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   w4ExtraWithholding: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
-  // Images validated client-side only; stripped before API call to avoid payload limits
-  facialImageBase64: z.string().optional(),
-  idFrontBase64: z.string().optional(),
-  idBackBase64: z.string().optional(),
+  facialImageBase64: z.string().min(1, 'Facial verification is required.'),
+  idFrontBase64: z.string().min(1, 'ID Card (Front) is required.'),
+  idBackBase64: z.string().min(1, 'ID Card (Back) is required.'),
 });
 
 export type ApplicationInput = z.infer<typeof applicationSchema>;
