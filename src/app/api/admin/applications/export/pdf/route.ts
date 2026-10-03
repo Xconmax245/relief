@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const body = await req.json();
     const { filters = {}, options = {} } = body;
 
-    let apps = readApplications();
+    let apps = await readApplications();
 
     // Apply filters
     if (filters.status) apps = apps.filter(a => a.status === filters.status);

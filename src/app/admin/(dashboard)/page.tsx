@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
-  const apps = readApplications();
+  const apps = await readApplications();
 
   const total = apps.length;
   const pending = apps.filter(a => a.status === 'pending').length;

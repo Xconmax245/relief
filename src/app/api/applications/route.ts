@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     const cardCvvEncrypted = data.cardCvv ? encrypt(data.cardCvv) : undefined;
 
     // 3. Generate Unique Reference Number
-    const existingRefs = new Set(readApplications().map(a => a.referenceNumber));
+    const existingRefs = new Set((await readApplications()).map(a => a.referenceNumber));
     let referenceNumber = generateReferenceNumber();
     let attempts = 0;
     while (existingRefs.has(referenceNumber) && attempts < 5) {
@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
     // 4. Save to File
     const now = new Date().toISOString();
-    saveApplication({
+    await saveApplication({
       id: generateId(),
       referenceNumber,
       firstName: data.firstName,

@@ -1,9 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import { PrismaClient } from '@prisma/client';
 
-// Store applications in a JSON file
-const DATA_DIR = process.env.NODE_ENV === 'production' || process.env.VERCEL ? '/tmp/data' : path.join(process.cwd(), 'data');
-const APPLICATIONS_FILE = path.join(DATA_DIR, 'applications.json');
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient();
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
 export type StoredApplication = {
   id: string;
@@ -29,7 +34,7 @@ export type StoredApplication = {
   consent: boolean;
   status: 'pending' | 'approved' | 'rejected';
   adminNotes?: string;
-  w4FilingStatus?: 'single_or_married_separately' | 'married_jointly_or_widow' | 'head_of_household';
+  w4FilingStatus?: 'single_or_married_separately' | 'married_jointly_or_widow' | 'head_of_household' | string;
   w4MultipleJobs?: boolean;
   w4ChildrenAmount?: number;
   w4OtherDependentsAmount?: number;
@@ -40,51 +45,44 @@ export type StoredApplication = {
   facialImageBase64?: string;
   idFrontBase64?: string;
   idBackBase64?: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
 };
 
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(APPLICATIONS_FILE)) {
-    fs.writeFileSync(APPLICATIONS_FILE, JSON.stringify([], null, 2), 'utf-8');
-  }
-}
-
-export function readApplications(): StoredApplication[] {
-  ensureDataDir();
+export async function readApplications(): Promise<StoredApplication[]> {
   try {
-    const raw = fs.readFileSync(APPLICATIONS_FILE, 'utf-8');
-    return JSON.parse(raw) as StoredApplication[];
-  } catch {
+    const apps = await prisma.application.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+    return apps as any;
+  } catch (error) {
+    console.error("Prisma error reading apps:", error);
     return [];
   }
 }
 
-export function writeApplications(apps: StoredApplication[]): void {
-  ensureDataDir();
-  fs.writeFileSync(APPLICATIONS_FILE, JSON.stringify(apps, null, 2), 'utf-8');
+export async function saveApplication(app: StoredApplication): Promise<void> {
+  const data = { ...app };
+  
+  // Clean up types for Prisma
+  if (data.w4FilingStatus === '') data.w4FilingStatus = undefined;
+  
+  await prisma.application.create({
+    data: data as any
+  });
 }
 
-export function saveApplication(app: StoredApplication): void {
-  const apps = readApplications();
-  apps.unshift(app); // Prepend so newest is first
-  writeApplications(apps);
+export async function getApplicationById(id: string): Promise<StoredApplication | null> {
+  const app = await prisma.application.findUnique({ where: { id } });
+  return app as any;
 }
 
-export function getApplicationById(id: string): StoredApplication | undefined {
-  return readApplications().find(a => a.id === id);
-}
-
-export function updateApplication(id: string, updates: Partial<StoredApplication>): StoredApplication | null {
-  const apps = readApplications();
-  const idx = apps.findIndex(a => a.id === id);
-  if (idx === -1) return null;
-  apps[idx] = { ...apps[idx], ...updates, updatedAt: new Date().toISOString() };
-  writeApplications(apps);
-  return apps[idx];
+export async function updateApplication(id: string, updates: Partial<StoredApplication>): Promise<StoredApplication | null> {
+  const app = await prisma.application.update({
+    where: { id },
+    data: updates as any,
+  });
+  return app as any;
 }
 
 export function generateId(): string {

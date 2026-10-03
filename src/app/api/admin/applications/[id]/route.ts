@@ -12,7 +12,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     }
 
     const { id } = await params;
-    const application = getApplicationById(id);
+    const application = await getApplicationById(id);
     if (!application) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }
@@ -68,7 +68,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     const body = await req.json();
     const { status, adminNotes } = body;
 
-    const updated = updateApplication(id, { status, adminNotes });
+    const updated = await updateApplication(id, { status, adminNotes });
     if (!updated) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }

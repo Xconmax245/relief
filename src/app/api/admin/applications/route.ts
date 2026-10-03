@@ -20,7 +20,7 @@ export async function GET(req: Request) {
     const income = searchParams.get('income');
     const search = searchParams.get('search')?.toLowerCase();
 
-    let apps = readApplications();
+    let apps = await readApplications();
 
     // Apply filters
     if (status) apps = apps.filter(a => a.status === status);
