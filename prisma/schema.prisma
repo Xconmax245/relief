@@ -56,15 +56,3 @@ model AdminUser {
   updatedAt    DateTime @updatedAt
 }
 
-model AuditLog {
-  id         String   @id @default(cuid())
-  action     String   // e.g., "VIEW_APPLICATION", "UPDATE_STATUS", "EXPORT_CSV", "EXPORT_APPLICATION_PDF"
-  entity     String   // e.g., "Application", "AdminUser"
-  entityId   String?
-  adminId    String
-  admin      AdminUser @relation(fields: [adminId], references: [id])
-  ipAddress  String?
-  userAgent  String?
-  changes    String?   // Store JSON string or metadata
-  createdAt  DateTime @default(now())
-}
