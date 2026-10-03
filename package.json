@@ -6,7 +6,6 @@
     "prisma": true,
     "@prisma/engines": true,
     "@prisma/client": true,
-    "bcrypt": true,
     "unrs-resolver": true
   },
   "scripts": {
@@ -25,7 +24,7 @@
     "@upstash/ratelimit": "^2.1.0",
     "@upstash/redis": "^1.39.0",
     "aos": "^2.3.4",
-    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
     "clsx": "^2.1.1",
     "framer-motion": "^13.4.0",
     "lucide-react": "^1.47.0",
@@ -42,7 +41,7 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
