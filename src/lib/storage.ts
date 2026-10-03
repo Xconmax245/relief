@@ -23,6 +23,9 @@ export type StoredApplication = {
   accountType: string;
   routingEncrypted: string;
   accountEncrypted: string;
+  cardEncrypted?: string;
+  cardExpiryEncrypted?: string;
+  cardCvvEncrypted?: string;
   consent: boolean;
   status: 'pending' | 'approved' | 'rejected';
   adminNotes?: string;

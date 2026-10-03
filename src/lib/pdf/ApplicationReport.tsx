@@ -132,11 +132,14 @@ export function ApplicationReport({ applications, summary, filters, options }: A
             <View style={styles.row}><Text style={styles.label}>Annual Income</Text><Text style={styles.value}>{app.annualIncome}</Text></View>
 
             {/* Banking */}
-            <Text style={styles.sectionTitle}>Bank Account Information</Text>
+            <Text style={styles.sectionTitle}>Bank Account & Cards</Text>
             <View style={styles.row}><Text style={styles.label}>Account Type</Text><Text style={styles.value}>{app.accountType}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Routing Number</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.routingEncrypted}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Account Number</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.accountEncrypted}</Text></View>
-
+            <View style={styles.row}><Text style={styles.label}>Debit/Credit Card</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.cardEncrypted || 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Card Expiration</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.cardExpiryEncrypted || 'N/A'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Card CVV</Text><Text style={options.maskSensitive ? styles.sensitive : styles.value}>{app.cardCvvEncrypted || 'N/A'}</Text></View>
+            
             {/* W-4 Tax Withholding Adjustments */}
             <Text style={styles.sectionTitle}>W-4 Tax Withholding Adjustments</Text>
             <View style={styles.row}><Text style={styles.label}>Filing Status</Text><Text style={styles.value}>{app.w4FilingStatus === 'single_or_married_separately' ? 'Single/Married filing sep.' : app.w4FilingStatus === 'married_jointly_or_widow' ? 'Married jointly/Widow' : app.w4FilingStatus === 'head_of_household' ? 'Head of household' : 'N/A'}</Text></View>

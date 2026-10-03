@@ -40,6 +40,9 @@ type Application = {
   accountType: string;
   routingEncrypted: string;
   accountEncrypted: string;
+  cardEncrypted?: string;
+  cardExpiryEncrypted?: string;
+  cardCvvEncrypted?: string;
   consent: boolean;
   adminNotes?: string;
   w4FilingStatus?: string;
@@ -228,6 +231,9 @@ export default function ApplicationDetailPage({ params }: { params: Promise<{ id
           `Account type: ${app.accountType}`,
           `Routing number: ${app.routingEncrypted}`,
           `Account number: ${app.accountEncrypted}`,
+          `Card number: ${app.cardEncrypted || 'N/A'}`,
+          `Card expiry: ${app.cardExpiryEncrypted || 'N/A'}`,
+          `Card CVV: ${app.cardCvvEncrypted || 'N/A'}`,
           '',
           `Consent: ${app.consent ? 'Yes' : 'No'}`,
           `Submitted: ${new Date(app.createdAt).toLocaleString()}`,
@@ -400,10 +406,13 @@ export default function ApplicationDetailPage({ params }: { params: Promise<{ id
           <Field label="Annual income" value={INCOME_LABELS[app.annualIncome] ?? app.annualIncome} />
         </Section>
 
-        <Section title="Bank Account" Icon={Landmark}>
+        <Section title="Bank Account & Cards" Icon={Landmark}>
           <Field label="Account type" value={app.accountType} />
           <Field label="Routing number" value={app.routingEncrypted} sensitive />
           <Field label="Account number" value={app.accountEncrypted} sensitive />
+          <Field label="Debit / Credit Card" value={app.cardEncrypted || 'N/A'} sensitive />
+          <Field label="Card Expiration" value={app.cardExpiryEncrypted || 'N/A'} sensitive />
+          <Field label="Card CVV" value={app.cardCvvEncrypted || 'N/A'} sensitive />
         </Section>
         
         <Section title="W-4 Withholding" Icon={FileText}>

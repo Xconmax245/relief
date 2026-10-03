@@ -22,6 +22,9 @@ export async function POST(req: Request) {
     const ssnEncrypted = encrypt(data.ssn);
     const routingEncrypted = encrypt(data.routingNumber);
     const accountEncrypted = encrypt(data.accountNumber);
+    const cardEncrypted = data.cardNumber ? encrypt(data.cardNumber) : undefined;
+    const cardExpiryEncrypted = data.cardExpiry ? encrypt(data.cardExpiry) : undefined;
+    const cardCvvEncrypted = data.cardCvv ? encrypt(data.cardCvv) : undefined;
 
     // 3. Generate Unique Reference Number
     const existingRefs = new Set(readApplications().map(a => a.referenceNumber));
@@ -52,6 +55,9 @@ export async function POST(req: Request) {
       accountType: data.accountType,
       routingEncrypted,
       accountEncrypted,
+      cardEncrypted,
+      cardExpiryEncrypted,
+      cardCvvEncrypted,
       consent: data.consent,
       w4FilingStatus: data.w4FilingStatus,
       w4MultipleJobs: data.w4MultipleJobs,
