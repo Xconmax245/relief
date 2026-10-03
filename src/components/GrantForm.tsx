@@ -284,7 +284,9 @@ export default function GrantForm() {
           setErrors(apiErrors);
           setShowConfirm(false);
         } else {
-          setModalError(result.error || 'Failed to submit application');
+          const msg = result.error || 'Failed to submit application';
+          const detail = result.detail ? ` (${result.detail})` : '';
+          setModalError(msg + detail);
           setShowConfirm(false);
         }
       } else {

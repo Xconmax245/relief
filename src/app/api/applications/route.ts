@@ -86,9 +86,10 @@ export async function POST(req: Request) {
     );
 
   } catch (error) {
-    console.error('API Error:', error);
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error('API Error:', msg);
     return NextResponse.json(
-      { error: 'An unexpected error occurred while processing your application.' },
+      { error: 'An unexpected error occurred while processing your application.', detail: msg },
       { status: 500 }
     );
   }
