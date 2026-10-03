@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2, Clock, FileText, Inbox, XCircle } from 'lucide-react';
 import StatusBadge from '@/components/admin/StatusBadge';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   const session = await getServerSession(authOptions);
   const apps = readApplications();
