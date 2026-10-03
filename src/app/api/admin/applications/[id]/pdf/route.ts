@@ -14,7 +14,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     }
 
     const { id } = await params;
-    const application = getApplicationById(id);
+    const application = await getApplicationById(id);
     if (!application) {
       return NextResponse.json({ error: 'Application not found' }, { status: 404 });
     }

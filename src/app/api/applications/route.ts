@@ -3,9 +3,6 @@ import { applicationSchema } from '@/lib/validations/application';
 import { encrypt } from '@/lib/encryption';
 import { saveApplication, generateId, generateReferenceNumber, readApplications } from '@/lib/storage';
 
-export const config = {
-  api: { bodyParser: { sizeLimit: '8mb' } },
-};
 
 export async function POST(req: Request) {
   try {
