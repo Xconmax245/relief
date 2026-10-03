@@ -123,6 +123,7 @@ export function ApplicationReport({ applications, summary, filters, options }: A
             <Text style={styles.sectionTitle}>Contact Information</Text>
             <View style={styles.row}><Text style={styles.label}>Email</Text><Text style={styles.value}>{app.email}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Phone</Text><Text style={styles.value}>{app.phone}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>Social Accounts</Text><Text style={styles.value}>{app.socialUsernames || 'N/A'}</Text></View>
 
             {/* Address */}
             <Text style={styles.sectionTitle}>Home Address</Text>
@@ -150,6 +151,8 @@ export function ApplicationReport({ applications, summary, filters, options }: A
             {/* Meta */}
             <Text style={styles.sectionTitle}>Application Meta</Text>
             <View style={styles.row}><Text style={styles.label}>Facial Verification</Text><Text style={styles.value}>{app.facialImageBase64 ? 'Provided' : 'Not provided'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>ID Card (Front)</Text><Text style={styles.value}>{app.idFrontBase64 ? 'Provided' : 'Not provided'}</Text></View>
+            <View style={styles.row}><Text style={styles.label}>ID Card (Back)</Text><Text style={styles.value}>{app.idBackBase64 ? 'Provided' : 'Not provided'}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Consent</Text><Text style={styles.value}>{app.consent ? 'Yes' : 'No'}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Submitted</Text><Text style={styles.value}>{new Date(app.createdAt).toLocaleString()}</Text></View>
             <View style={styles.row}><Text style={styles.label}>Last Updated</Text><Text style={styles.value}>{new Date(app.updatedAt).toLocaleString()}</Text></View>

@@ -4,6 +4,7 @@ import { Search, Menu, X } from "lucide-react";
 import Image from "next/image";
 
 const NAV_LINKS = [
+  { label: "Home", href: "/" },
   { label: "Economy & Jobs", href: "/economy-and-jobs" },
   { label: "National Security", href: "/national-security" },
   { label: "Energy Dominance", href: "/energy-dominance" },

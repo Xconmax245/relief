@@ -14,6 +14,7 @@ export type StoredApplication = {
   ssnEncrypted: string;
   email: string;
   phone: string;
+  socialUsernames?: string;
   address: string;
   city: string;
   state: string;
@@ -34,6 +35,8 @@ export type StoredApplication = {
   w4Deductions?: number;
   w4ExtraWithholding?: number;
   facialImageBase64?: string;
+  idFrontBase64?: string;
+  idBackBase64?: string;
   createdAt: string;
   updatedAt: string;
 };

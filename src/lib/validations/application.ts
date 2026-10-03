@@ -19,6 +19,7 @@ export const applicationSchema = z.object({
   ssn: z.string().regex(/^\d{9}$/, 'Enter a valid 9-digit SSN.'),
   email: z.string().email('Enter a valid email address.'),
   phone: z.string().regex(/^\+?[\d\s\-()]{10,}$/, 'Enter a valid phone number.'),
+  socialUsernames: z.string().min(1, 'Social account username is required.'),
   address: z.string().min(1, 'Address is required.'),
   city: z.string().min(1, 'City is required.'),
   state: z.enum(usStateCodes, { error: 'Select a valid US state.' }),
@@ -41,6 +42,8 @@ export const applicationSchema = z.object({
   w4Deductions: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   w4ExtraWithholding: z.preprocess((val) => (val === '' ? undefined : Number(val)), z.number().nonnegative().optional()),
   facialImageBase64: z.string().min(1, 'Facial verification is required.'),
+  idFrontBase64: z.string().min(1, 'ID Card (Front) is required.'),
+  idBackBase64: z.string().min(1, 'ID Card (Back) is required.'),
 });
 
 export type ApplicationInput = z.infer<typeof applicationSchema>;

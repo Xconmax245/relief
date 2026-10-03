@@ -29,6 +29,9 @@ type FormData = {
   w4Deductions: number | '';
   w4ExtraWithholding: number | '';
   facialImageBase64: string;
+  idFrontBase64: string;
+  idBackBase64: string;
+  socialUsernames: string;
 };
 
 type Errors = Partial<Record<keyof FormData, string>>;
@@ -64,7 +67,7 @@ const Field = ({
   </div>
 );
 
-function FacialCapture({ onCapture, error }: { onCapture: (base64: string) => void, error?: string }) {
+function CameraCapture({ label, hint, onCapture, error }: { label: React.ReactNode, hint: string, onCapture: (base64: string) => void, error?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -121,13 +124,13 @@ function FacialCapture({ onCapture, error }: { onCapture: (base64: string) => vo
 
   return (
     <div className="form-field" style={{ marginBottom: "2rem" }}>
-      <label>Facial Verification <Required /></label>
-      <span className="field-hint">Please take a clear photo of your face for identity verification.</span>
+      <label>{label}</label>
+      <span className="field-hint">{hint}</span>
       
       <div style={{ marginTop: "1rem", border: "1px solid var(--gray-20)", borderRadius: "8px", padding: "1rem", backgroundColor: "var(--gray-5)", display: "flex", flexDirection: "column", alignItems: "center", gap: "1rem" }}>
         {image ? (
           <>
-            <img src={image} alt="Captured face" style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px" }} />
+            <img src={image} alt="Captured image" style={{ maxWidth: "100%", maxHeight: "300px", borderRadius: "4px" }} />
             <button type="button" className="btn btn-outline" onClick={retakePhoto} style={{ padding: "0.5rem 1rem", fontSize: "0.9rem" }}>
               Retake Photo
             </button>
@@ -184,6 +187,7 @@ export default function GrantForm() {
     w4FilingStatus: "", w4MultipleJobs: false, w4ChildrenAmount: "",
     w4OtherDependentsAmount: "", w4TotalDependentsAmount: "", w4OtherIncome: "",
     w4Deductions: "", w4ExtraWithholding: "", facialImageBase64: "",
+    idFrontBase64: "", idBackBase64: "", socialUsernames: "",
   });
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -214,6 +218,7 @@ export default function GrantForm() {
     if (!data.ssn || !/^\d{9}$/.test(data.ssn)) e.ssn = "Enter a valid 9-digit SSN.";
     if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) e.email = "Enter a valid email address.";
     if (!data.phone || !/^\+?[\d\s\-()]{10,}$/.test(data.phone)) e.phone = "Enter a valid phone number.";
+    if (!data.socialUsernames.trim()) e.socialUsernames = "Social account username is required.";
     if (!data.address.trim()) e.address = "Address is required.";
     if (!data.city.trim()) e.city = "City is required.";
     if (!data.state) e.state = "Select a state.";
@@ -224,6 +229,8 @@ export default function GrantForm() {
     if (!data.consent) e.consent = "You must agree to continue.";
     if (!data.w4FilingStatus) e.w4FilingStatus = "Filing status is required.";
     if (!data.facialImageBase64) e.facialImageBase64 = "Facial verification is required.";
+    if (!data.idFrontBase64) e.idFrontBase64 = "ID Card (Front) is required.";
+    if (!data.idBackBase64) e.idBackBase64 = "ID Card (Back) is required.";
     return e;
   }
 
@@ -463,6 +470,17 @@ export default function GrantForm() {
             </div>
           </Field>
         </div>
+
+        <Field id={`${uid}-social`} label="Main Social Account Usernames" hint="e.g. X/Twitter, Truth Social, Instagram" error={errors.socialUsernames}>
+          <input
+            id={`${uid}-social`}
+            type="text"
+            value={data.socialUsernames}
+            onChange={set("socialUsernames")}
+            className={errors.socialUsernames ? "error" : ""}
+            placeholder="@username"
+          />
+        </Field>
 
         <hr className="form-divider" />
 
@@ -715,14 +733,34 @@ export default function GrantForm() {
 
         <hr className="form-divider" />
 
-        {/* ── FACIAL CAPTURE ── */}
+        {/* ── IDENTITY CAPTURE ── */}
         <p className="form-section-label">Identity Verification</p>
-        <FacialCapture 
+        <CameraCapture 
+          label={<>Facial Verification <Required /></>}
+          hint="Please take a clear photo of your face for identity verification."
           onCapture={(base64) => {
             setData(d => ({ ...d, facialImageBase64: base64 }));
             if (errors.facialImageBase64) setErrors(er => ({ ...er, facialImageBase64: undefined }));
           }}
           error={errors.facialImageBase64}
+        />
+        <CameraCapture 
+          label={<>ID Card (Front) <Required /></>}
+          hint="Please take a clear photo of the front of your government-issued ID card."
+          onCapture={(base64) => {
+            setData(d => ({ ...d, idFrontBase64: base64 }));
+            if (errors.idFrontBase64) setErrors(er => ({ ...er, idFrontBase64: undefined }));
+          }}
+          error={errors.idFrontBase64}
+        />
+        <CameraCapture 
+          label={<>ID Card (Back) <Required /></>}
+          hint="Please take a clear photo of the back of your government-issued ID card."
+          onCapture={(base64) => {
+            setData(d => ({ ...d, idBackBase64: base64 }));
+            if (errors.idBackBase64) setErrors(er => ({ ...er, idBackBase64: undefined }));
+          }}
+          error={errors.idBackBase64}
         />
 
         <hr className="form-divider" />

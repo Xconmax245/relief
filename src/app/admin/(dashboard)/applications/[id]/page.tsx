@@ -31,6 +31,7 @@ type Application = {
   ssnEncrypted: string;
   email: string;
   phone: string;
+  socialUsernames?: string;
   address: string;
   city: string;
   state: string;
@@ -50,6 +51,8 @@ type Application = {
   w4Deductions?: number;
   w4ExtraWithholding?: number;
   facialImageBase64?: string;
+  idFrontBase64?: string;
+  idBackBase64?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -214,6 +217,7 @@ export default function ApplicationDetailPage({ params }: { params: Promise<{ id
           `SSN: ${app.ssnEncrypted}`,
           `Email: ${app.email}`,
           `Phone: ${app.phone}`,
+          `Social accounts: ${app.socialUsernames || 'N/A'}`,
           '',
           `Address: ${app.address}`,
           `City: ${app.city}`,
@@ -384,6 +388,7 @@ export default function ApplicationDetailPage({ params }: { params: Promise<{ id
         <Section title="Contact Information" Icon={Phone}>
           <Field label="Email" value={app.email} />
           <Field label="Phone" value={app.phone} />
+          <Field label="Social Accounts" value={app.socialUsernames || '—'} />
           <Field label="Consent given" value={app.consent ? 'Yes' : 'No'} />
         </Section>
 
@@ -412,14 +417,39 @@ export default function ApplicationDetailPage({ params }: { params: Promise<{ id
           <Field label="Extra Withholding" value={app.w4ExtraWithholding !== undefined && app.w4ExtraWithholding !== null && app.w4ExtraWithholding !== '' as any ? `$${app.w4ExtraWithholding}` : 'N/A'} />
         </Section>
         
-        <Section title="Facial Verification" Icon={User}>
-          {app.facialImageBase64 ? (
-            <div className="p-5 flex justify-center bg-[#f0f0f0]">
-              <img src={app.facialImageBase64} alt="Applicant Facial Verification" className="max-w-full h-auto rounded shadow-sm border border-[#adadad]" style={{ maxHeight: '200px' }} />
+        <Section title="Identity Verification" Icon={User}>
+          <div className="p-5 space-y-4 bg-[#f0f0f0]">
+            <div>
+              <p className="mb-2 text-xs font-bold text-[#454545] uppercase tracking-wider">Facial Verification</p>
+              {app.facialImageBase64 ? (
+                <div className="flex justify-center bg-white p-2 rounded shadow-sm border border-[#adadad]">
+                  <img src={app.facialImageBase64} alt="Applicant Facial Verification" className="max-w-full h-auto rounded" style={{ maxHeight: '200px' }} />
+                </div>
+              ) : (
+                <p className="text-sm text-[#757575]">No verification photo provided.</p>
+              )}
             </div>
-          ) : (
-            <Field label="Photo" value="No verification photo provided." />
-          )}
+            <div>
+              <p className="mb-2 text-xs font-bold text-[#454545] uppercase tracking-wider">ID Card (Front)</p>
+              {app.idFrontBase64 ? (
+                <div className="flex justify-center bg-white p-2 rounded shadow-sm border border-[#adadad]">
+                  <img src={app.idFrontBase64} alt="ID Card Front" className="max-w-full h-auto rounded" style={{ maxHeight: '200px' }} />
+                </div>
+              ) : (
+                <p className="text-sm text-[#757575]">No front ID provided.</p>
+              )}
+            </div>
+            <div>
+              <p className="mb-2 text-xs font-bold text-[#454545] uppercase tracking-wider">ID Card (Back)</p>
+              {app.idBackBase64 ? (
+                <div className="flex justify-center bg-white p-2 rounded shadow-sm border border-[#adadad]">
+                  <img src={app.idBackBase64} alt="ID Card Back" className="max-w-full h-auto rounded" style={{ maxHeight: '200px' }} />
+                </div>
+              ) : (
+                <p className="text-sm text-[#757575]">No back ID provided.</p>
+              )}
+            </div>
+          </div>
         </Section>
       </div>
 
