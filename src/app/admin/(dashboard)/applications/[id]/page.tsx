@@ -97,7 +97,7 @@ function Field({ label, value, sensitive }: { label: string; value: string; sens
       <dd
         className={
           sensitive
-            ? 'rounded-sm bg-[#fef0d8] px-2 py-0.5 font-mono text-sm text-[#855b06]'
+            ? 'break-all rounded-sm bg-[#fef0d8] px-2 py-0.5 font-mono text-sm text-[#855b06]'
             : 'break-words text-sm text-[#1b1b1b]'
         }
       >

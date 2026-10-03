@@ -23,7 +23,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         </div>
       </div>
 
-      <div className="relative flex min-h-screen">
+      <div className="relative flex min-h-screen flex-col lg:flex-row">
         <AdminSidebar email={session.user?.email ?? ''} name={session.user?.name} />
 
         <main className="min-w-0 flex-1 p-5 sm:p-7 lg:p-9">
