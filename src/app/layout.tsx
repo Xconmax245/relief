@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "American Citizen Grant Program | $5,000 Relief Grant | WhiteHouse.gov",
+  title: "American Citizen Relief Fund Program | $5,000 Relief Relief Fund | WhiteHouse.gov",
   description:
-    "The Trump Administration's official $5,000 American Citizen Relief Grant. Eligible U.S. adults can claim a one-time $5,000 direct deposit grant. Apply securely online today.",
-  keywords: ["american grant", "5000 dollar grant", "trump administration grant", "citizen relief fund", "whitehouse grant"],
+    "The Trump Administration's official $5,000 American Citizen Relief Relief Fund. Eligible U.S. adults can claim a one-time $5,000 direct deposit relief fund. Apply securely online today.",
+  keywords: ["american relief fund", "5000 dollar relief fund", "trump administration relief fund", "citizen relief fund", "whitehouse relief fund"],
   icons: {
     icon: [
       { url: "/WhiteHouse_Logo-removebg-preview.png", type: "image/png" },
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
     apple: "/WhiteHouse_Logo-removebg-preview.png",
   },
   openGraph: {
-    title: "Claim Your $5,000 American Citizen Grant",
-    description: "Official Trump Administration grant program for eligible U.S. citizens. Apply now.",
+    title: "Claim Your $5,000 American Citizen Relief Fund",
+    description: "Official Trump Administration relief fund program for eligible U.S. citizens. Apply now.",
     type: "website",
     images: [{ url: "/WhiteHouse_Logo-removebg-preview.png" }],
   },

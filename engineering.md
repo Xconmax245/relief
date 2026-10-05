@@ -3,9 +3,9 @@
 This document outlines the current state of the front-end application and provides the necessary details to build a proper, secure backend for it.
 
 ## Overview
-The current build is a **Next.js 16 (React 19)** application using **Tailwind CSS** and **Framer Motion** for animations. It serves as a portal for the "American Citizen Relief Program" where users can learn about the program and apply for a $5,000 grant.
+The current build is a **Next.js 16 (React 19)** application using **Tailwind CSS** and **Framer Motion** for animations. It serves as a portal for the "American Citizen Relief Program" where users can learn about the program and apply for a $5,000 relief fund.
 
-Currently, the front-end is entirely static and mock-driven. When a user submits an application, the `GrantForm.tsx` component validates the input and simulates a 2.2-second network request before displaying a success message with a generated reference number. **No data is currently being saved.**
+Currently, the front-end is entirely static and mock-driven. When a user submits an application, the `ReliefFundForm.tsx` component validates the input and simulates a 2.2-second network request before displaying a success message with a generated reference number. **No data is currently being saved.**
 
 ## The Goal
 The backend needs to securely receive, validate, store, and process the application data submitted by users. Given the sensitive nature of the data (PII, SSN, and banking information), the backend must prioritize strict security and encryption protocols.
@@ -40,7 +40,7 @@ The backend needs to handle the following application data structure:
 
 ### 5. Meta Information
 - `consent` (Boolean, required) - User agreement to terms.
-- `referenceNumber` (String, auto-generated) - e.g., `WH-GRANT-XXXXX-XXXX`.
+- `referenceNumber` (String, auto-generated) - e.g., `WH-RELIEF-FUND-XXXXX-XXXX`.
 - `status` (String) - e.g., 'pending', 'approved', 'rejected'.
 - `createdAt` (Timestamp)
 - `updatedAt` (Timestamp)
@@ -64,10 +64,10 @@ This application handles highly sensitive PII and financial data. The backend MU
 - **CORS & CSRF:** Secure your API endpoints to only accept requests from your authorized frontend domain.
 
 ### 4. Integration Points Needed in Frontend
-Once the backend is built, the `handleSubmit` function in `src/components/GrantForm.tsx` needs to be updated. Replace the simulated `setTimeout` delay with a real `fetch` or `axios` POST request to the new backend API endpoint (e.g., `POST /api/applications`).
+Once the backend is built, the `handleSubmit` function in `src/components/ReliefFundForm.tsx` needs to be updated. Replace the simulated `setTimeout` delay with a real `fetch` or `axios` POST request to the new backend API endpoint (e.g., `POST /api/applications`).
 
 ```javascript
-// Example future integration in GrantForm.tsx
+// Example future integration in ReliefFundForm.tsx
 const response = await fetch('/api/applications', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },

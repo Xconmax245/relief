@@ -14,7 +14,7 @@ export default function Hero() {
         <div className="ticker-track">
           <span className="ticker-content">
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
-            OFFICIAL NOTICE: The Trump Administration American Citizen Grant Program is now accepting applications
+            OFFICIAL NOTICE: The Trump Administration American Citizen Relief Fund Program is now accepting applications
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
             Deadline: Limited enrollment period. Apply today
@@ -26,7 +26,7 @@ export default function Hero() {
             256-bit SSL encrypted. Your data is safe
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
-            OFFICIAL NOTICE: The Trump Administration American Citizen Grant Program is now accepting applications
+            OFFICIAL NOTICE: The Trump Administration American Citizen Relief Fund Program is now accepting applications
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Star size={11} aria-hidden="true" style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} />
             Deadline: Limited enrollment period. Apply today
@@ -54,14 +54,14 @@ export default function Hero() {
             <h1 id="hero-heading">
               Claim Your <span className="accent">$5,000</span><br />
               American Citizen<br />
-              Relief Grant
+              Relief Relief Fund
             </h1>
 
             <p className="hero-sub">
               The Trump Administration is putting money directly back into the
               hands of hard-working Americans. Eligible U.S. citizens may
               receive a one-time{" "}
-              <strong style={{ color: "#f0c169" }}>$5,000 grant</strong>{" "}
+              <strong style={{ color: "#f0c169" }}>$5,000 relief fund</strong>{" "}
               deposited directly to their bank account. No repayment required.
             </p>
 
@@ -69,7 +69,7 @@ export default function Hero() {
             <div className="hero-stats">
               <div className="hero-stat">
                 <strong>$5,000</strong>
-                <span>Grant Amount</span>
+                <span>Relief Fund Amount</span>
               </div>
               <div className="hero-stat hero-stat--divider">
                 <strong>18+</strong>
@@ -88,7 +88,7 @@ export default function Hero() {
                 onClick={scrollToForm}
                 id="hero-cta-btn"
               >
-                Claim Your Grant <ArrowRight size={18} aria-hidden="true" />
+                Claim Your Relief Fund <ArrowRight size={18} aria-hidden="true" />
               </button>
               <a href="#how-it-works" className="btn btn-outline">
                 Learn More

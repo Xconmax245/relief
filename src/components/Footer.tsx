@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Share2, PlayCircle, MessageCircle, Camera } from "lucide-react";
 
 const FOOTER_LINKS = {
-  "Grant Program": [
+  "Relief Fund Program": [
     { label: "Eligibility Requirements", href: "/eligibility-requirements" },
     { label: "Application Process", href: "/application-process" },
     { label: "Check Application Status", href: "/check-application-status" },

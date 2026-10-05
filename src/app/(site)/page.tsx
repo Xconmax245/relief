@@ -8,7 +8,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Hero from "@/components/Hero";
-import GrantForm from "@/components/GrantForm";
+import ReliefFundForm from "@/components/ReliefFundForm";
 
 const HOW_STEPS = [
   {
@@ -19,11 +19,11 @@ const HOW_STEPS = [
   {
     num: 2,
     title: "Complete the Secure Application",
-    desc: "Fill out the official grant form with your personal details, home address, and banking information for direct deposit.",
+    desc: "Fill out the official relief fund form with your personal details, home address, and banking information for direct deposit.",
   },
   {
     num: 3,
-    title: "Receive Your $5,000 Grant",
+    title: "Receive Your $5,000 Relief Fund",
     desc: "Upon approval, your $5,000 will be deposited directly into your bank account within 7–14 business days. No repayment required.",
   },
 ];
@@ -73,7 +73,7 @@ export default function HomePage() {
         <div className="section-inner">
           <p className="section-eyebrow text-center">Step-by-step</p>
           <h2 className="section-title text-center" id="how-heading" data-aos="fade-up">
-            How to Claim Your Grant
+            How to Claim Your Relief Fund
           </h2>
           <p
             className="section-sub text-center"
@@ -121,13 +121,13 @@ export default function HomePage() {
               Americans first. Through the America First Economic Relief Program,
               every eligible U.S. citizen has the opportunity to claim a
               direct{" "}
-              <strong style={{ color: "var(--red-secondary)" }}>$5,000 grant</strong>{" "}
+              <strong style={{ color: "var(--red-secondary)" }}>$5,000 relief fund</strong>{" "}
               with no strings attached, no repayment required.
             </p>
             <p className="president-quote-body">
               This administration believes in you: the American worker,
               entrepreneur, veteran, and family. These funds are yours.
-              Apply today and receive your grant within 7–14 business days.
+              Apply today and receive your relief fund within 7–14 business days.
             </p>
             <div className="president-signature">
               <span className="president-sig-name">Donald J. Trump</span>
@@ -190,9 +190,9 @@ export default function HomePage() {
               <Users size={36} color="#f0c169" />
             </div>
             <div className="announcement-text">
-              <h2 id="announcement-heading">Presidential Grant Initiative</h2>
+              <h2 id="announcement-heading">Presidential Relief Fund Initiative</h2>
               <p>
-                President Trump has authorized a direct $5,000 relief grant to eligible American
+                President Trump has authorized a direct $5,000 relief relief fund to eligible American
                 citizens as part of the America First Economic Relief Program. This program is
                 administered by the Executive Office of the President and funded by the federal
                 Economic Relief Act. Applications are processed on a first-come, first-served basis.
@@ -209,7 +209,7 @@ export default function HomePage() {
           {/* Left info */}
           <div data-aos="fade-right">
             <p className="section-eyebrow" style={{ justifyContent: "flex-start" }}>Official Application</p>
-            <h2 id="form-section-heading">Apply for Your $5,000 American Citizen Grant</h2>
+            <h2 id="form-section-heading">Apply for Your $5,000 American Citizen Relief Fund</h2>
             <p>
               Complete the secure application below. All fields are required. Your information is
               protected by 256-bit SSL encryption and will never be sold or shared with third parties.
@@ -229,7 +229,7 @@ export default function HomePage() {
             {/* Mini stats */}
             <div className="mini-stats-grid">
               {[
-                { label: "Grant Amount", val: "$5,000" },
+                { label: "Relief Fund Amount", val: "$5,000" },
                 { label: "Processing Time", val: "7–14 Days" },
                 { label: "Applications Open", val: "Today" },
                 { label: "Repayment", val: "None" },
@@ -244,7 +244,7 @@ export default function HomePage() {
 
           {/* Right – form */}
           <div data-aos="fade-left" data-aos-delay="100">
-            <GrantForm />
+            <ReliefFundForm />
           </div>
         </div>
       </section>

@@ -105,7 +105,7 @@ export default function ApplicationsPage() {
         <div>
           <h1 className="text-2xl font-bold text-[#162e51] font-serif">Applications</h1>
           <p className="mt-1 text-sm text-[#454545]">
-            Every submitted grant application. Open one to see the full form.
+            Every submitted relief fund application. Open one to see the full form.
           </p>
         </div>
         <button

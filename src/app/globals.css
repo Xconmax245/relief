@@ -952,22 +952,22 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 0.5rem;
 }
 
-/* Grant Form Card */
-.grant-form-card {
+/* Relief Fund Form Card */
+.relief-fund-form-card {
   background: var(--white);
   border: 1px solid var(--gray-10);
   border-radius: 4px;
   box-shadow: 0 4px 30px rgba(0,0,0,0.08);
   overflow: hidden;
 }
-.grant-form-header {
+.relief-fund-form-header {
   background: var(--blue-primary-dark);
   padding: 1.5rem 2rem;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
-.grant-form-header .form-icon {
+.relief-fund-form-header .form-icon {
   width: 44px;
   height: 44px;
   background: rgba(255,255,255,0.15);
@@ -977,17 +977,17 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
   flex-shrink: 0;
 }
-.grant-form-header h3 {
+.relief-fund-form-header h3 {
   color: white;
   margin: 0;
   font-size: 1.1rem;
 }
-.grant-form-header span {
+.relief-fund-form-header span {
   color: rgba(255,255,255,0.7);
   font-family: 'Public Sans', sans-serif;
   font-size: 0.8rem;
 }
-.grant-form-body {
+.relief-fund-form-body {
   padding: 2rem;
 }
 .form-row {
@@ -1631,8 +1631,8 @@ h1, h2, h3, h4, h5, h6 {
   .section-title { font-size: 1.6rem; }
   .announcement-box { padding: 1.5rem 1rem; }
   .announcement-icon { display: none; }
-  .grant-form-body { padding: 1.25rem; }
-  .grant-form-header { padding: 1.25rem; }
+  .relief-fund-form-body { padding: 1.25rem; }
+  .relief-fund-form-header { padding: 1.25rem; }
   .mini-stats-grid { grid-template-columns: 1fr 1fr; }
 }
 

@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `${page.title} | WhiteHouse.gov`,
-    description: `Official ${page.title} for the American Citizen Grant Program.`,
+    description: `Official ${page.title} for the American Citizen Relief Fund Program.`,
   };
 }
 
